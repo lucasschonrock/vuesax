@@ -10561,7 +10561,13 @@ var vsTrExpand_component = normalizeComponent(
     var _this2 = this;
 
     this.$nextTick(function () {
-      _this2.colspan = _this2.$parent.$refs.thead.querySelectorAll('th').length;
+      if (_this2.$parent.$refs.thead === undefined) {
+        _this2.colspan = document.querySelectorAll('th').length;
+        
+      } else {
+        _this2.colspan = _this2.$parent.$refs.thead.querySelectorAll('th').length;
+      }
+
 
       if (_this2.$slots.expand) {
         _this2.colspan++;
@@ -10583,7 +10589,12 @@ var vsTrExpand_component = normalizeComponent(
       }
     },
     clicktr: function clicktr(evt) {
-      this.$parent.clicktr(this.data, true);
+      try {
+        this.$parent.clicktr(this.data, true);
+      } catch(_) {
+        this.$parent.$parent.clicktr(this.data, true);
+      }
+      
 
       if (this.$slots.expand) {
         this.clicktd(evt);
